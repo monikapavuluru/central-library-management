@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central Library</title>
+    
+    <style>
+      *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    height:100vh;
+    background: 
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url("library.jpg");   
+         background: url(read2.jpeg);
+         backdrop-filter:blur(6px);
+    background-size:cover;
+    background-position:center;
+    color:white;
+    
+}
+
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 60px;
+}
+
+.nav-links{
+    list-style:none;
+    display:flex;
+    gap:40px;
+    
+}
+
+.nav-links a{
+    text-decoration:none;
+   color:white;
+   font-weight: bold;
+    font-size:25px;
+    position:relative;
+    font-style: italic;
+}
+
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    width:0%;
+    height:2px;
+    background:white;
+    left:0;
+    bottom:-5px;
+    transition:0.3s;
+}
+
+.nav-links a:hover::after{
+    width:100%;
+}
+
+
+.login-btn{
+    padding:15px 30px;
+    border:none;
+    border-radius:25px;
+    font-size:16px;
+    color:white;
+    cursor:pointer;
+    background: transparent;
+    background:linear-gradient(45deg,#5f2cff,#ff3cac);
+    box-shadow:0 0 15px rgba(255,255,255,0.4);
+    transition:0.3s;
+}
+
+.login-btn:hover{
+    transform:scale(1.05);
+    
+}
+
+
+.content{
+    height:80vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:0 20%;
+}
+
+.content h1{
+    font-size:48px;
+    margin-bottom:20px;
+}
+
+.content p{
+    font-size:18px;
+    line-height:1.6;
+}
+    </style>
+</head>
+<body>
+ <form action="library2.html">
+    
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <button class="login-btn">LOGIN</button>
+        </nav>
+    </header>
+
+    
+    <section class="content">
+        <h1>Welcome to the Central Library</h1>
+        <p>
+            Explore our extensive collection of books, journals, and digital resources.
+        </p>
+        <p>
+            We’re here to support your learning and research needs. Log in now to access
+            your account, renew books, or connect with our services.
+        </p>
+    </section>
+</form>
+</form>
+</body>
+</html>

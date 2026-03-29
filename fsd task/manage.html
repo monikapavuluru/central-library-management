@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Manage Users</title>
+
+<style>
+
+body{
+background:linear-gradient(120deg,#0f2027,#203a43,#2c5364);
+color:white;
+font-family:Arial;
+margin:0;
+}
+
+.sidebar{
+width:230px;
+height:100vh;
+background:rgba(0,0,0,0.7);
+position:fixed;
+padding-top:20px;
+}
+
+.sidebar h2{
+text-align:center;
+}
+
+.sidebar ul{
+list-style:none;
+padding:0;
+}
+
+.sidebar ul li{
+padding:15px 20px;
+}
+
+.sidebar ul li a{
+color:white;
+text-decoration:none;
+}
+
+.main{
+margin-left:230px;
+padding:40px;
+}
+
+input,select{
+padding:10px;
+margin:10px;
+}
+
+button{
+padding:10px 15px;
+background:#ff4ecd;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid white;
+}
+td{
+    text-align: center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>Library Admin</h2>
+
+<ul>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="manage.html">Manage Users</a></li>
+<li><a href="libraryrecords.html">Library Records</a></li>
+<li><a href="reports.html">Reports</a></li>
+<li><a href="backup.html">Backup&Restore Database</a></li>
+<li><a href="library.html">LOGOUT</a></li>
+</ul>
+
+</div>
+
+<div class="main">
+
+<h2>User Management</h2>
+
+<input type="text" id="username" placeholder="Enter Username">
+
+<select id="role">
+<option>Admin</option>
+<option>Librarian</option>
+<option>Faculty</option>
+<option>Student</option>
+</select>
+
+<button onclick="addUser()">Add User</button>
+<table>
+
+<thead>
+<tr>
+<th>Name</th>
+<th>Role</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="userTable"></tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let users=[];
+
+function addUser(){
+
+let name=document.getElementById("username").value;
+let role=document.getElementById("role").value;
+
+if(name===""){
+alert("Please enter username");
+return;
+}
+
+users.push({name:name,role:role});
+
+document.getElementById("username").value="";
+
+displayUsers();
+
+}
+
+function displayUsers(){
+
+let table=document.getElementById("userTable");
+
+table.innerHTML="";
+
+users.forEach((u,i)=>{
+
+table.innerHTML+=`
+<tr>
+<td>${u.name}</td>
+<td>${u.role}</td>
+<td>
+<button onclick="editUser(${i})">Edit</button>
+<button onclick="deleteUser(${i})">Delete</button>
+</td>
+</tr>
+`;
+
+});
+
+}
+
+function deleteUser(i){
+
+users.splice(i,1);
+displayUsers();
+
+}
+
+function editUser(i){
+
+let newName=prompt("Enter new username",users[i].name);
+let newRole=prompt("Enter new role",users[i].role);
+
+if(newName!=null && newRole!=null){
+
+users[i].name=newName;
+users[i].role=newRole;
+
+displayUsers();
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

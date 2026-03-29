@@ -1,0 +1,55 @@
+body{
+margin:0;
+font-family:Arial;
+}
+
+.sidebar{
+width:220px;
+height:100vh;
+background:#333;
+color:white;
+position:fixed;
+padding-top:20px;
+}
+
+.sidebar a{
+display:block;
+color:white;
+padding:12px;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#575757;
+}
+
+.main{
+margin-left:220px;
+padding:20px;
+}
+
+.card{
+background:#f2f2f2;
+padding:15px;
+margin:10px;
+display:inline-block;
+width:180px;
+text-align:center;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table, th, td{
+border:1px solid black;
+padding:10px;
+text-align:center;
+}
+
+button, input, select{
+padding:10px;
+margin:8px 0;
+}

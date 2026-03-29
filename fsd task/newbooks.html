@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Architecture | Central Library</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    
+    body { 
+        background: radial-gradient(circle at top right, #1e293b, #0f172a); 
+        color: white; 
+        min-height: 100vh; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center;
+        padding: 20px;
+    }
+
+    .requirements-container {
+        max-width: 1100px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .header { margin-bottom: 50px; }
+    .header h1 { font-size: 2.5rem; color: #00ffff; margin-bottom: 10px; }
+    .header p { color: #94a3b8; font-size: 1.1rem; }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .req-card {
+        background: rgba(30, 41, 59, 0.5);
+        backdrop-filter: blur(10px);
+        padding: 40px;
+        border-radius: 24px;
+        border: 1px solid rgba(0, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .req-card:hover {
+        transform: translateY(-10px);
+        border-color: #00ffff;
+        box-shadow: 0 10px 40px rgba(0, 255, 255, 0.1);
+    }
+
+    .icon-box {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .req-card h3 {
+        color: #00ffff;
+        margin-bottom: 15px;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+
+    .req-card p {
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .status-dot {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        height: 8px;
+        width: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #10b981;
+    }
+
+    /* Decorative element */
+    .glow-circle {
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        background: rgba(0, 255, 255, 0.05);
+        filter: blur(100px);
+        border-radius: 50%;
+        z-index: -1;
+        bottom: -100px;
+        left: -100px;
+    }
+</style>
+</head>
+<body>
+
+<div class="glow-circle"></div>
+
+<div class="requirements-container">
+    <div class="header">
+        <h1>Core System Standards</h1>
+        <p>Operational Compliance & Performance Benchmarks</p>
+    </div>
+
+    <div class="grid">
+        <div class="req-card">
+            <div class="status-dot"></div>
+            <span class="icon-box">✨</span>
+            <h3>Intuitive Usability</h3>
+            <p>Designed for immediate productivity with a zero-learning-curve interface, requiring minimal staff training.</p>
+        </div>
+
+        <div class="req-card">
+            <div class="status-dot"></div>
+            <span class="icon-box">🛡️</span>
+            <h3>Data Fortification</h3>
+            <p>End-to-end encryption and stringent access controls ensure total user privacy and database security.</p>
+        </div>
+
+        <div class="req-card">
+            <div class="status-dot"></div>
+            <span class="icon-box">⚡</span>
+            <h3>Real-time Response</h3>
+            <p>Optimized architecture ensures all user requests are processed within sub-second time limits.</p>
+        </div>
+
+        <div class="req-card">
+            <div class="status-dot"></div>
+            <span class="icon-box">👥</span>
+            <h3>Multi-User Sync</h3>
+            <p>Robust concurrency management allows hundreds of librarians and students to interact simultaneously without lag.</p>
+        </div>
+
+        <div class="req-card">
+            <div class="status-dot"></div>
+            <span class="icon-box">📈</span>
+            <h3>Infinite Scalability</h3>
+            <p>Elastic database structure ready to accommodate millions of book entries and growing user bases seamlessly.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

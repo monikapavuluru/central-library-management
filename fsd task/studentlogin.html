@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central Library | Integrated Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        
+        body { background: #0f172a; color: white; min-height: 100vh; overflow-x: hidden; }
+
+        /* --- LOGIN PAGE STYLING --- */
+        #loginPage {
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
+                        url("https://vemu.org/assets/img/library/IMG_9709.jpg") center/cover no-repeat;
+        }
+
+        .login-card {
+            display: flex; width: 90%; max-width: 1000px; height: 600px; border-radius: 30px; 
+            overflow: hidden; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 255, 0.2); margin-top: 50px;
+        }
+
+        .info-panel { flex: 1; background: linear-gradient(145deg, rgba(0, 255, 255, 0.1), rgba(0, 40, 40, 0.4)); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; border-right: 1px solid rgba(255,255,255,0.1); }
+        .info-panel img { width: 220px; margin-bottom: 20px; border-radius: 15px; filter: drop-shadow(0 0 10px #00ffff); }
+        .form-panel { flex: 1.2; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+
+        .role-selector { display: flex; background: rgba(0,0,0,0.4); border-radius: 50px; padding: 5px; margin-bottom: 25px; }
+        .role-tab { flex: 1; text-align: center; padding: 12px; border-radius: 40px; cursor: pointer; font-size: 13px; opacity: 0.5; transition: 0.3s; }
+        .role-tab.active { background: #00ffff; color: #0f172a; opacity: 1; font-weight: 600; }
+
+        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.9); color: #333; outline: none; }
+        .login-btn { width: 100%; padding: 15px; border-radius: 40px; border: none; background: #00ffff; color: #0f172a; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .login-btn:hover { background: #00e5e5; transform: scale(1.02); box-shadow: 0 0 20px rgba(0, 255, 255, 0.4); }
+        .login-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* --- DASHBOARD STYLING --- */
+        #dashboardPage { padding-top: 80px; }
+        nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); padding: 0 50px; height: 70px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00ffff; position: fixed; top: 0; width: 100%; z-index: 1000; }
+        .logo { font-size: 22px; font-weight: 600; color: #00ffff; text-transform: uppercase; }
+        .nav-links { display: flex; align-items: center; gap: 30px; }
+        .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; cursor: pointer; }
+        .nav-links a:hover, .nav-links a.active { color: #00ffff; }
+        .logout-btn { background: #ef4444; color: white !important; padding: 8px 18px; border-radius: 20px; font-weight: bold; }
+
+        .section-container { padding: 40px 60px; max-width: 1300px; margin: 0 auto; }
+        .dashboard-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
+        .stats-container { display: flex; gap: 15px; }
+        .stat-badge { text-align: center; background: #1e293b; padding: 12px 25px; border-radius: 15px; border: 1px solid #334155; min-width: 140px; }
+        .stat-badge p { font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
+        
+        #mainSearch { width: 100%; padding: 15px 25px; border-radius: 50px; background: #1e293b; border: 1px solid #334155; color: white; outline: none; font-size: 16px; margin-bottom: 40px; }
+        
+        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .book-card { background: #1e293b; border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .book-card:hover { transform: translateY(-10px); border-color: #00ffff; }
+
+        .status-tag { align-self: flex-start; font-size: 10px; font-weight: bold; padding: 4px 12px; border-radius: 50px; margin-bottom: 15px; }
+        .avail { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .not-avail { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+
+        .table-box { background: #1e293b; padding: 30px; border-radius: 20px; border: 1px solid #334155; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { text-align: left; padding: 15px; color: #00ffff; border-bottom: 2px solid #334155; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        td { padding: 18px 15px; border-bottom: 1px solid #334155; font-size: 14px; color: #e2e8f0; }
+
+        .alert-card { padding: 25px; border-radius: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; border: 1px solid transparent; }
+        .alert-success { background: rgba(34, 197, 94, 0.1); border-color: #22c55e; }
+        .hidden { display: none !important; }
+
+        .copy-info { display: flex; justify-content: space-between; font-size: 11px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; }
+
+        /* --- CONTACT SECTION STYLING --- */
+        .contact-footer {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px dashed rgba(0, 255, 255, 0.2);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .contact-card {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+        .contact-card h4 { color: #00ffff; margin-bottom: 15px; font-size: 16px; }
+        .contact-item { font-size: 13px; color: #cbd5e1; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .contact-item b { color: #00ffff; width: 80px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+<div id="loginPage">
+    <header style="width: 100%; text-align: center; padding: 20px; font-size: 24px; font-weight: 600; border-bottom: 3px solid #00ffff; background: rgba(0,0,0,0.5);">
+        Central Library Management System
+    </header>
+
+    <div class="login-card">
+        <div class="info-panel">
+            <img id="heroImg" src="https://cache.careers360.mobi/media/presets/720X480/colleges/social-media/media-gallery/5168/2020/11/2/Library%20of%20Indus%20Institute%20of%20Technology%20and%20Engineering%20Ahmedabad_Library.jpg">
+            <h2 id="heroTitle">Student Hub</h2>
+            <p id="heroDesc" style="font-size: 13px; opacity: 0.8; margin-top: 10px;">Access branch-specific resources and manage your active loans.</p>
+        </div>
+
+        <div class="form-panel">
+            <div class="role-selector">
+                <div class="role-tab active" onclick="updateRole('Student')">Student</div>
+                <div class="role-tab" onclick="updateRole('Faculty')">Faculty</div>
+                <div class="role-tab" onclick="updateRole('Librarian')">Librarian</div>
+            </div>
+
+            <h2 id="formHeader" style="margin-bottom: 25px; font-weight: 600;">Student Login</h2>
+            <form onsubmit="processLogin(event)">
+                <input type="text" id="loginID" placeholder="User ID (e.g. STU-101)" required>
+                <input type="text" id="loginName" placeholder="Enter Full Name" required>
+                
+                <div id="branchSelectGroup">
+                    <label style="font-size: 11px; color: #00ffff; font-weight: bold; margin-bottom: 5px; display: block;">DEPARTMENT / BRANCH</label>
+                    <select id="loginBranch">
+                        <option value="CSE">CSE (Computer Science)</option>
+                        <option value="EEE">EEE (Electrical Engineering)</option>
+                        <option value="ECE">ECE (Electronics)</option>
+                        <option value="Civil">Civil Engineering</option>
+                        <option value="Mechanical">Mechanical Engineering</option>
+                        <option value="Civil Services">Civil Services / IAS</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="login-btn">Secure Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="dashboardPage" class="hidden">
+    <nav>
+        <div class="logo">📚 Central Library</div>
+        <div class="nav-links">
+            <a onclick="showSection('catalog')" id="link-catalog" class="active">Library Catalog</a>
+            <a onclick="showSection('mybooks')" id="link-mybooks">Issued Books</a>
+            <a onclick="showSection('fines')" id="link-fines">Account Status</a>
+            <a href="library2.html" class="logout-btn" onclick="location.reload()">Logout</a>
+            
+        </div>
+    </nav>
+
+    <div id="catalog" class="section-container">
+        <div class="dashboard-header">
+            <div>
+                <h1>Welcome, <span id="dispName" style="color: #00ffff;">User</span></h1>
+                <p id="dispRoleInfo" style="color: #94a3b8; font-size: 14px;"></p>
+            </div>
+            <div class="stats-container">
+                <div class="stat-badge"><p>Available Titles</p><h3 id="statTotal" style="color: #00ffff;">0</h3></div>
+                <div class="stat-badge"><p id="branchStatLabel">Your Branch Stock</p><h3 id="statBranch" style="color: #4ade80;">0</h3></div>
+            </div>
+        </div>
+
+        <input type="text" id="mainSearch" placeholder="Search by Book Title, Author or ISBN..." onkeyup="searchBooks()">
+        <div class="book-grid" id="bookDisplay"></div>
+
+        <div class="contact-footer">
+            <div class="contact-card">
+                <h4>👨‍🏫 Librarian Contact Details</h4>
+                <div class="contact-item"><b>Name:</b> Dr. Rajesh Kumar (Chief Librarian)</div>
+                <div class="contact-item"><b>Email:</b> library.support@university.edu</div>
+                <div class="contact-item"><b>Phone:</b> +91 98765 43210 / Ext: 404</div>
+                <div class="contact-item"><b>Office:</b> Level 1, Central Library Wing (A)</div>
+            </div>
+            <div class="contact-card">
+                <h4>⚠️ Report Book Issues</h4>
+                <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 15px;">
+                    Facing issues with a damaged book, missing pages, or incorrect ISBN details? 
+                    Please contact the help desk immediately or send an email with the Book ISBN and your User ID.
+                </p>
+                <div class="contact-item" style="color: #fbbf24;"><b>Note:</b> Office hours: 9:00 AM to 6:00 PM (Mon-Sat)</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mybooks" class="section-container hidden">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px;">
+            <h2 id="issuedTitle" style="border-left: 5px solid #00ffff; padding-left:15px; font-weight: 600;">Issue Tracking Log</h2>
+            <div style="text-align: right; font-size: 12px; color: #94a3b8;">Refreshed: <span id="lastRefreshed"></span></div>
+        </div>
+        
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Book Particulars</th>
+                        <th>Issued On</th>
+                        <th>Deadline</th>
+                        <th>Timeline</th>
+                        <th>Penalty</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="issuedBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="fines" class="section-container hidden">
+        <h2 style="margin-bottom:25px; border-left: 5px solid #00ffff; padding-left:15px; font-weight: 600;">Membership & Eligibility</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px;">
+            <div class="alert-card alert-success" style="flex-direction: column; align-items: flex-start;">
+                <h3 style="color: #4ade80; margin-bottom: 10px;">Verification Status: <span id="eligText">ACTIVE</span></h3>
+                <p style="font-size: 13px; color: #e2e8f0; line-height: 1.6;">Your account is in good standing. You are permitted to borrow resources based on your role privileges.</p>
+                <div id="fineTotalBox" style="margin-top: 15px; font-size: 18px; font-weight: bold; color: white;">Total Outstanding Fine: ₹0.00</div>
+            </div>
+
+            <div class="alert-card" style="background: rgba(30,41,59,0.5); border-color: #334155; flex-direction: column; align-items: flex-start;">
+                <h3 style="color: #00ffff; margin-bottom: 10px;">Library Circulation Policy</h3>
+                <ul style="font-size: 12px; color: #cbd5e1; list-style-position: inside; line-height: 2;">
+                    <li>Standard Issue Duration: 15 Days (Renewable once)</li>
+                    <li>Overdue Penalty: ₹5.00 per day after deadline</li>
+                    <li>Damage/Loss: Replacement cost + 20% processing fee</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentRole = 'Student';
+    let userSession = { name: '', branch: '' };
+
+    const libraryData = [
+        { title: "Introduction to Algorithms", auth: "Cormen", sub: "CSE", isbn: "CSE-101", total: 10, issued: 3},
+        { title: "The C Programming Language", auth: "Ritchie", sub: "CSE", isbn: "CSE-102", total: 15, issued: 5 },
+        { title: "Data Structure", auth: "Seymour Lipschutz", sub: "CSE", isbn: "CSE-103", total: 5, issued: 5 },
+         { title: "Computer Networks", auth: "Andrew S.Tanenbaum", sub: "CSE", isbn: "CSE-104", total: 12, issued: 3 },
+        { title: "Database System", auth: "Henry F.Korth", sub: "CSE", isbn: "CSE-105", total: 5, issued: 5},
+        { title: "Artificial Intelligence", auth: "Stuart Russell & Peter Norvig", sub: "CSE", isbn: "CSE-106", total: 8, issued:3 },
+
+        { title: "Electrical Engineering", auth: "Vincent Del Toro", sub: "EEE", isbn: "EEE-201", total: 8, issued: 3 },
+        { title: "Electrical Machinery", auth: "P.S. Bimbhra", sub: "EEE", isbn: "EEE-202", total: 10, issued:5 },
+        { title: "Power System Engineering", auth: "I.J.Nagrath & D.P.Kothari", sub: "EEE", isbn: "EEE-203", total: 5, issued:1 },
+        { title: "Control Systems Engineering", auth: "Nagrath & Gopal", sub: "EEE", isbn: "EEE-204", total: 10, issued:3 },
+        { title: "Power Electronics", auth: "P.S Bimbhra", sub: "EEE", isbn: "EEE-205", total: 12,issued:3 },
+
+        { title: "Microelectronic Circuits", auth: "Sedra/Smith", sub: "ECE", isbn: "ECE-301", total: 10, issued: 3 },
+        { title: "ELectronic Devices and Circuit Theory", auth: "Ronert Boylestad", sub: "ECE", isbn: "ECE-302", total: 8, issued:4 },
+        { title: "Communication System", auth: "Simon Haykin", sub: "ECE", isbn: "ECE-303", total: 5, issued:5 },
+        { title: "Digital Electronics", auth: "Morris Mano", sub: "ECE", isbn: "ECE-304",total: 7, issued:3 },
+        { title: "Signals and Systems", auth: "Alan V.Oppenheim", sub: "ECE", isbn: "ECE-305", total: 4, issued:1},
+
+        { title: "Structural Analysis", auth: "Hibbeler", sub: "Civil", isbn: "CIV-401", total: 6, issued: 3 },
+        { title: "Strength of Materials", auth: "Bansal", sub: "Civil", isbn: "CIV-402",total: 5, issued:4},
+        { title: "Geotechnical Engineering", auth: "K.R.Arora", sub: "Civil", isbn: "CIV-403", total: 6, issued:6 },
+        { title: "Environmental Engineering", auth: "Peavy and Row", sub: "Civil", isbn: "CIV-404",total: 6,issued:1 },
+        { title: "Transportation Engineering", auth: "Khanna and Justo", sub: "Civil", isbn: "CIV-405",total: 6, issued:2 },
+
+
+        { title: "Thermodynamics", auth: "P.K. Nag", sub: "Mechanical", isbn: "MECH-501", total: 11, issued: 3 },
+         { title: "Theory of Machines", auth: "S.S.Rattan", sub: "Mechanical", isbn: "MECH-502", total: 6,issued:5 },
+        { title: "Strength of Materials", auth: "Bansal", sub: "Mechanical", isbn: "MECH-503",total: 5, issued:5 },
+        { title: "Fluid Mechanics", auth: "R.K.rajput", sub: "Mechanical", isbn: "MECH-504",total: 8, issued:4 },
+        { title: "Engineering Mechanics", auth: "Hibbeler", sub: "Mechanical", isbn: "MECH-505",total: 11,issued:2 },
+
+        { title: "Indian Polity", auth: "M. Laxmikanth", sub: "Civil Services", isbn: "IAS-901", total: 25, issued: 5 },
+        { title: "Ancient India", auth: "R.S.Sharma", sub: "Civil Services", isbn: "IAS-902",total: 20, issued:10 },
+        { title: "Oxford School Atlas", auth: "Oxford Publications", sub: "Civil Services", isbn: "IAS-903",total: 10, issued:5 },
+        { title: "Medieval India", auth: "Satish Chandra", sub: "Civil Services", isbn: "IAS-904",total: 8, issued:4 },
+        { title: "Spectrum Modern History", auth: "Rajiv Ahir", sub: "Civil Services", isbn: "IAS-905",total: 7, issued:2 }
+
+    ];
+
+    const issuedHistory = [
+        { title: "Introduction to Algorithms", isbn: "CSE-101", branch: "CSE", date: "10-Mar-2026", due: "25-Mar-2026", daysRem: -2, fine: 10, status: "Overdue" },
+        { title: "Computer Networks", isbn: "CSE-104", branch: "CSE", date: "22-Mar-2026", due: "06-Apr-2026", daysRem: 10, fine: 0, status: "Active" },
+        { title: "Electrical Machinery", isbn: "EEE-202", branch: "EEE", date: "20-Mar-2026", due: "04-Apr-2026", daysRem: 8, fine: 0, status: "Active" },
+        { title: "Analog Circuits", isbn: "ECE-305", branch: "ECE", date: "26-Mar-2026", due: "10-Apr-2026", daysRem: 14, fine: 0, status: "Active" },
+        { title: "Structural Analysis", isbn: "CIV-401", branch: "Civil", date: "12-Mar-2026", due: "27-Mar-2026", daysRem: 0, fine: 0, status: "Due Today" },
+        { title: "Fluid Mechanics", isbn: "MECH-504", branch: "Mechanical", date: "05-Mar-2026", due: "20-Mar-2026", daysRem: -7, fine: 35, status: "Overdue" },
+        { title: "Indian Polity", isbn: "IAS-901", branch: "Civil Services", date: "24-Mar-2026", due: "08-Apr-2026", daysRem: 12, fine: 0, status: "Active" },
+        { title: "Ancient India", isbn: "IAS-902", branch: "Civil Services", date: "15-Mar-2026", due: "30-Mar-2026", daysRem: 3, fine: 0, status: "Active" }
+    ];
+
+    function updateRole(role) {
+        currentRole = role;
+        document.querySelectorAll('.role-tab').forEach(t => t.classList.toggle('active', t.innerText === role));
+        document.getElementById('formHeader').innerText = role + " Login";
+        document.getElementById('branchSelectGroup').classList.toggle('hidden', role !== 'Student');
+        
+        const hTitle = document.getElementById('heroTitle');
+        const hDesc = document.getElementById('heroDesc');
+        if(role === 'Student') {
+            hTitle.innerText = "Student Hub";
+            hDesc.innerText = "Access branch resources and manage your active loans.";
+        } else if(role === 'Faculty') {
+            hTitle.innerText = "Faculty Portal";
+            hDesc.innerText = "Access advanced research papers and priority academic journals.";
+        } else {
+            hTitle.innerText = "Librarian Admin";
+            hDesc.innerText = "Monitor inventory, verify returns, and manage cross-branch logs.";
+        }
+    }
+
+    function processLogin(e) {
+        e.preventDefault();
+        userSession.name = document.getElementById('loginName').value;
+        userSession.branch = currentRole === 'Student' ? document.getElementById('loginBranch').value : 'Administration';
+
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('dashboardPage').classList.remove('hidden');
+        document.getElementById('lastRefreshed').innerText = new Date().toLocaleTimeString();
+
+        document.getElementById('dispName').innerText = userSession.name;
+        document.getElementById('dispRoleInfo').innerText = `${currentRole} | ${userSession.branch}`;
+        
+        loadCatalog();
+        loadIssuedLogs();
+    }
+
+    function loadCatalog() {
+        const filtered = (currentRole === 'Librarian' || currentRole === 'Faculty') 
+            ? libraryData : libraryData.filter(b => b.sub === userSession.branch);
+        renderBooks(filtered);
+        document.getElementById('statTotal').innerText = libraryData.length;
+        document.getElementById('statBranch').innerText = filtered.length;
+        document.getElementById('branchStatLabel').innerText = (currentRole === 'Student') ? "Your Branch Stock" : "Filtered Results";
+    }
+
+    function renderBooks(books) {
+        const grid = document.getElementById('bookDisplay');
+        grid.innerHTML = books.length ? "" : "<p style='grid-column:1/-1; text-align:center; opacity:0.5;'>No items found.</p>";
+        books.forEach(b => {
+            const avail = b.total - b.issued;
+            grid.innerHTML += `
+                <div class="book-card">
+                    <div>
+                        <span class="status-tag ${avail > 0 ? 'avail' : 'not-avail'}">${avail > 0 ? 'AVAILABLE' : 'OUT OF STOCK'}</span>
+                        <h3 style="font-size:16px;">${b.title}</h3>
+                        <p style="color:#94a3b8; font-size:12px;">By ${b.auth} | ${b.isbn}</p>
+                        <div class="copy-info"><span>In Stock: ${avail}</span><span>Issued: ${b.issued}</span></div>
+                    </div>
+                </div>`;
+        });
+    }
+
+    function searchBooks() {
+        const q = document.getElementById('mainSearch').value.toLowerCase();
+        const base = (currentRole === 'Librarian' || currentRole === 'Faculty') ? libraryData : libraryData.filter(b => b.sub === userSession.branch);
+        renderBooks(base.filter(b => b.title.toLowerCase().includes(q) || b.isbn.toLowerCase().includes(q)));
+    }
+
+    function loadIssuedLogs() {
+        const tbody = document.getElementById('issuedBody');
+        tbody.innerHTML = "";
+        
+        const filteredLog = (currentRole === 'Librarian' || currentRole === 'Faculty') 
+            ? issuedHistory 
+            : issuedHistory.filter(i => i.branch === userSession.branch);
+
+        document.getElementById('issuedTitle').innerText = (currentRole === 'Student') 
+            ? `${userSession.branch} Department Issued Books` 
+            : "Global Issue Management";
+
+        let totalFine = 0;
+        filteredLog.forEach(item => {
+            totalFine += item.fine;
+            let statusClass = item.status === 'Overdue' ? 'not-avail' : (item.status === 'Due Today' ? 'pending' : 'avail');
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${item.title}</strong><br><small>${item.isbn} | Branch: ${item.branch}</small></td>
+                    <td>${item.date}</td>
+                    <td>${item.due}</td>
+                    <td style="color: ${item.daysRem < 0 ? '#f87171' : '#e2e8f0'}">${item.daysRem} Days</td>
+                    <td style="color: ${item.fine > 0 ? '#f87171' : '#4ade80'}">₹${item.fine.toFixed(2)}</td>
+                    <td><span class="status-tag ${statusClass}">${item.status}</span></td>
+                </tr>`;
+        });
+        document.getElementById('fineTotalBox').innerText = `Total Outstanding Fine: ₹${totalFine.toFixed(2)}`;
+    }
+
+    function showSection(id) {
+        document.querySelectorAll('.section-container').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        document.getElementById('link-' + id).classList.add('active');
+    }
+</script>
+</body>
+</html>

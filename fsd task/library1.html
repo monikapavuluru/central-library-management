@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Role</title>
+
+<style>
+
+body{
+  height:100vh;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  font-family:Segoe UI;
+  color:white;
+
+  /* Background image with dark overlay */
+  background: linear-gradient(rgba(20,30,48,0.7), rgba(36,59,85,0.7)), url(vemu.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+/* HEADER */
+
+header{
+  width:100%;
+  background:darkcyan;
+  box-shadow:0 0 10px cyan;
+}
+
+.header-content{
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* LOGO */
+.logo{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  margin:5px 15px;
+}
+
+/* SCROLLING TEXT */
+.scroll-text{
+  white-space: nowrap;
+  font-size:28px;
+  font-weight:bold;
+  animation: scrollText 12s linear infinite;
+}
+
+@keyframes scrollText{
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* CONTAINER CENTER */
+
+.container{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(2,200px);
+  gap:30px;
+  align-content:center;
+}
+
+/* CARDS */
+
+.card{
+  background: rgba(255,255,255,0.9);
+  padding:30px;
+  text-align:center;
+  border-radius:15px;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:scale(1.08);
+  background:#00c6ff;
+}
+
+.card a{
+  text-decoration:none;
+  color:black;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.card:hover a{
+  color:white;
+}
+
+/* BACK BUTTON */
+
+.back{
+  margin-bottom:20px;
+}
+
+.back a{
+  color:white;
+  text-decoration:none;
+  font-size:20px;
+  background:darkcyan;
+  padding:8px 15px;
+  border-radius:8px;
+}
+
+.back a:hover{
+  background:cyan;
+  color:black;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-content">
+    <img src="vemulogo.webp" class="logo" alt="College Logo">
+    <div class="scroll-text">
+      VEMU INSTITUTE OF TECHNOLOGY (AUTONOMOUS)
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="card"><a href="studentlogin.html">Student Login</a></div>
+  <div class="card"><a href="faculty.html">Faculty Login</a></div>
+  <div class="card"><a href="adminlogin.html">Admin Login</a></div>
+  <div class="card"><a href="librarian.html">Librarian Login</a></div>
+</div>
+
+<div class="back">
+  <a href="library.html">⬅ Back to Home</a>
+</div>
+
+</body>
+</html>
